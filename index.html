@@ -42,8 +42,8 @@
     //Define BLE Device Specs
     var deviceName ='ESP32';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
-    var ledCharacteristic = '19b10001-e8f2-537e-4f6c-d104768a1214';
-    var sensorCharacteristic= '19b10002-e8f2-537e-4f6c-d104768a1214';
+    var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
+    var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
 
     //Global Variables to Handle Bluetooth
     var bleServer;
@@ -80,7 +80,6 @@
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
             filters: [{name: deviceName}],
-            //acceptAllDevices: true,
             optionalServices: [bleService]
         })
         .then(device => {
