@@ -1,54 +1,152 @@
-<!--
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp32-web-bluetooth/
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files.
-  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ESP32 Web BLE App</title>
+    <title>ESP32 BLE Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="">
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
 </head>
 <body>
-  <h1>ESP32 Web BLE Application</h1>
-  <button id="connectBleButton">Connect to BLE Device</button>
-  <button id="disconnectBleButton">Disconnect BLE Device</button>
-  <p>BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
-  <h2>Fetched Value</h2>
-  <p><span id="valueContainer">NaN</span></p>
-  <p>Last reading: <span id="timestamp"></span></p>
-  <h2>Control GPIO 2</h2>
-  <button id="onButton">ON</button>
-  <button id="offButton">OFF</button>
-  <p>Last value sent: <span id="valueSent"></span></p>
-  <p><a href="https://randomnerdtutorials.com/">Created by RandomNerdTutorials.com</a></p>
-  <p><a href="https://RandomNerdTutorials.com/esp32-web-bluetooth/">Read the full project here.</a></p>
+    <div class="topnav">
+        <h1>ESP32 BLE Configuration</h1>
+    </div>
+    <div class="content">
+        <div class="card-grid">
+            <div class="card">
+                <p>
+                    <button id="connectBleButton" class="connectButton"> Connect to BLE Device</button>
+                    <button id="disconnectBleButton" class="disconnectButton"> Disconnect BLE Device</button>
+                </p>
+                <p class="gray-label">BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
+            </div>
+        </div>
+        <div class="card-grid">
+            <div class="card">
+                <h2>mmode0 Configuration</h2>
+                <label for="enpC">Corrente C - enpC:</label>
+                <select id="enpC">
+                    <option value="0">Desativado - 0</option>
+                    <option value="1">Ativado - 1</option>
+                </select>
+                <label for="enpB">Corrente B - enpB:</label>
+                <select id="enpB">
+                    <option value="0">Desativado - 0</option>
+                    <option value="1">Ativado - 1</option>
+                </select>
+                <label for="enpA">Corrente A - enpA:</label>
+                <select id="enpA">
+                    <option value="0">Desativado - 0</option>
+                    <option value="1">Ativado - 1</option>
+                </select>
+                <label for="absEnp">Soma Energia Ativa - absEnp:</label>
+                <select id="absEnp">
+                    <option value="0">Aritmética - 0</option>
+                    <option value="1">Absoluta - 1</option>
+                </select>
+                <label for="absEnq">Soma Energia Reativa - absEnq:</label>
+                <select id="absEnq">
+                    <option value="0">Aritmética - 0</option>
+                    <option value="1">Absoluta - 1</option>
+                </select>
+                <label for="cf2Varh">Pino CF2 - cf2Varh:</label>
+                <select id="cf2Varh">
+                    <option value="0">Energia Aparente - 0</option>
+                    <option value="1">Energia Reativa - 1</option>
+                </select>
+                <label for="phase">Fases - phase:</label>
+                <select id="phase">
+                    <option value="0">3P4W com Neutro - 0</option>
+                    <option value="1">3P3W sem Neutro - 1</option>
+                </select>
+                <label for="didtEn">TC ou Rogowski - didtEn:</label>
+                <select id="didtEn">
+                    <option value="0">TC - 0</option>
+                    <option value="1">Rogowski - 1</option>
+                </select>
+                <label for="hpfOff">Filtro - hpfOff:</label>
+                <select id="hpfOff">
+                    <option value="0">HPF Ativo - 0</option>
+                    <option value="1">HPF Desativo - 1</option>
+                </select>
+                <label for="freq60hz">Frequência - freq60hz:</label>
+                <select id="freq60hz">
+                    <option value="0">50Hz - 0</option>
+                    <option value="1">60Hz - 1</option>
+                </select>
+            </div>
+
+            <div class="card">
+                <h2>Calibration Configuration</h2>
+                <label for="pgaGain">PGA Gain:</label>
+                <input type="text" id="pgaGain">
+                <label for="voltGain">Voltage Gain:</label>
+                <input type="text" id="voltGain">
+                <label for="curGainCt1">Current Gain CT1:</label>
+                <input type="text" id="curGainCt1">
+                <label for="curGainCt2">Current Gain CT2:</label>
+                <input type="text" id="curGainCt2">
+                <label for="curGainCt3">Current Gain CT3:</label>
+                <input type="text" id="curGainCt3">
+            </div>
+
+            <div class="card">
+                <h2>Thresholds Configuration</h2>
+                <label for="freqHiThresh">Frequency High Threshold:</label>
+                <input type="text" id="freqHiThresh">
+                <label for="freqLoThresh">Frequency Low Threshold:</label>
+                <input type="text" id="freqLoThresh">
+                <label for="voltLoThresh">Voltage Low Threshold:</label>
+                <input type="text" id="voltLoThresh">
+            </div>
+        </div>
+        <button id="saveConfigButton" class="saveButton">Save Configuration</button>
+        <p class="gray-label">Status: <span id="configStatus"></span></p>
+    </div>
+    <div class="footer">
+        <p><a href="https://randomnerdtutorials.com/">Created by RandomNerdTutorials.com</a></p>
+    </div>
 </body>
 <script>
     // DOM Elements
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
-    const onButton = document.getElementById('onButton');
-    const offButton = document.getElementById('offButton');
-    const retrievedValue = document.getElementById('valueContainer');
-    const latestValueSent = document.getElementById('valueSent');
+    const saveConfigButton = document.getElementById('saveConfigButton');
     const bleStateContainer = document.getElementById('bleState');
-    const timestampContainer = document.getElementById('timestamp');
+    const configStatusContainer = document.getElementById('configStatus');
+
+    const enpC = document.getElementById('enpC');
+    const enpB = document.getElementById('enpB');
+    const enpA = document.getElementById('enpA');
+    const absEnp = document.getElementById('absEnp');
+    const absEnq = document.getElementById('absEnq');
+    const cf2Varh = document.getElementById('cf2Varh');
+    const phase = document.getElementById('phase');
+    const didtEn = document.getElementById('didtEn');
+    const hpfOff = document.getElementById('hpfOff');
+    const freq60hz = document.getElementById('freq60hz');
+
+    const pgaGain = document.getElementById('pgaGain');
+    const voltGain = document.getElementById('voltGain');
+    const curGainCt1 = document.getElementById('curGainCt1');
+    const curGainCt2 = document.getElementById('curGainCt2');
+    const curGainCt3 = document.getElementById('curGainCt3');
+
+    const freqHiThresh = document.getElementById('freqHiThresh');
+    const freqLoThresh = document.getElementById('freqLoThresh');
+    const voltLoThresh = document.getElementById('voltLoThresh');
 
     //Define BLE Device Specs
-    var deviceName ='ESP32';
+    var deviceName = 'ESP32';
     var bleService = '19b10000-e8f2-537e-4f6c-d104768a1214';
-    var ledCharacteristic = '19b10002-e8f2-537e-4f6c-d104768a1214';
-    var sensorCharacteristic= '19b10001-e8f2-537e-4f6c-d104768a1214';
+    var configCharacteristic = '19b10003-e8f2-537e-4f6c-d104768a1214';
+    var sendConfigCharacteristic = '19b10004-e8f2-537e-4f6c-d104768a1214';
 
     //Global Variables to Handle Bluetooth
     var bleServer;
     var bleServiceFound;
-    var sensorCharacteristicFound;
+    var configCharacteristicFound;
+    var sendConfigCharacteristicFound;
 
     // Connect Button (search for BLE Devices only if BLE is available)
     connectButton.addEventListener('click', (event) => {
@@ -60,15 +158,14 @@
     // Disconnect Button
     disconnectButton.addEventListener('click', disconnectDevice);
 
-    // Write to the ESP32 LED Characteristic
-    onButton.addEventListener('click', () => writeOnCharacteristic(1));
-    offButton.addEventListener('click', () => writeOnCharacteristic(0));
+    // Save Configuration Button
+    saveConfigButton.addEventListener('click', saveConfiguration);
 
     // Check if BLE is available in your Browser
     function isWebBluetoothEnabled() {
         if (!navigator.bluetooth) {
-            console.log("Web Bluetooth API is not available in this browser!");
-            bleStateContainer.innerHTML = "Web Bluetooth API is not available in this browser!";
+            console.log('Web Bluetooth API is not available in this browser!');
+            bleStateContainer.innerHTML = "Web Bluetooth API is not available in this browser/device!";
             return false
         }
         console.log('Web Bluetooth API supported in this browser.');
@@ -97,21 +194,18 @@
         .then(service => {
             bleServiceFound = service;
             console.log("Service discovered:", service.uuid);
-            return service.getCharacteristic(sensorCharacteristic);
+            return Promise.all([
+                service.getCharacteristic(configCharacteristic),
+                service.getCharacteristic(sendConfigCharacteristic)
+            ]);
         })
-        .then(characteristic => {
-            console.log("Characteristic discovered:", characteristic.uuid);
-            sensorCharacteristicFound = characteristic;
-            characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
-            characteristic.startNotifications();
-            console.log("Notifications Started.");
-            return characteristic.readValue();
-        })
-        .then(value => {
-            console.log("Read value: ", value);
-            const decodedValue = new TextDecoder().decode(value);
-            console.log("Decoded value: ", decodedValue);
-            retrievedValue.innerHTML = decodedValue;
+        .then(characteristics => {
+            configCharacteristicFound = characteristics[0];
+            sendConfigCharacteristicFound = characteristics[1];
+
+            sendConfigCharacteristicFound.startNotifications();
+            sendConfigCharacteristicFound.addEventListener('characteristicvaluechanged', handleCharacteristicChange);
+            console.log("Characteristics discovered and notifications started.");
         })
         .catch(error => {
             console.log('Error: ', error);
@@ -122,80 +216,86 @@
         console.log('Device Disconnected:', event.target.device.name);
         bleStateContainer.innerHTML = "Device disconnected";
         bleStateContainer.style.color = "#d13a30";
-
-        connectToDevice();
     }
 
-    function handleCharacteristicChange(event){
-        const newValueReceived = new TextDecoder().decode(event.target.value);
-        console.log("Characteristic value changed: ", newValueReceived);
-        retrievedValue.innerHTML = newValueReceived;
-        timestampContainer.innerHTML = getDateTime();
-    }
+    function saveConfiguration() {
+        const configData = {
+            enpC: enpC.value,
+            enpB: enpB.value,
+            enpA: enpA.value,
+            absEnp: absEnp.value,
+            absEnq: absEnq.value,
+            cf2Varh: cf2Varh.value,
+            phase: phase.value,
+            didtEn: didtEn.value,
+            hpfOff: hpfOff.value,
+            freq60hz: freq60hz.value,
+            pgaGain: pgaGain.value,
+            voltGain: voltGain.value,
+            curGainCt1: curGainCt1.value,
+            curGainCt2: curGainCt2.value,
+            curGainCt3: curGainCt3.value,
+            freqHiThresh: freqHiThresh.value,
+            freqLoThresh: freqLoThresh.value,
+            voltLoThresh: voltLoThresh.value
+        };
 
-    function writeOnCharacteristic(value){
         if (bleServer && bleServer.connected) {
-            bleServiceFound.getCharacteristic(ledCharacteristic)
-            .then(characteristic => {
-                console.log("Found the LED characteristic: ", characteristic.uuid);
-                const data = new Uint8Array([value]);
-                return characteristic.writeValue(data);
-            })
-            .then(() => {
-                latestValueSent.innerHTML = value;
-                console.log("Value written to LEDcharacteristic:", value);
-            })
-            .catch(error => {
-                console.error("Error writing to the LED characteristic: ", error);
-            });
+            const encoder = new TextEncoder();
+            const data = encoder.encode(JSON.stringify(configData));
+            configCharacteristicFound.writeValue(data)
+                .then(() => {
+                    configStatusContainer.innerHTML = "Configuration saved successfully!";
+                    configStatusContainer.style.color = "#24af37";
+                })
+                .catch(error => {
+                    console.error("Error writing configuration: ", error);
+                    configStatusContainer.innerHTML = "Failed to save configuration.";
+                    configStatusContainer.style.color = "#d13a30";
+                });
         } else {
-            console.error ("Bluetooth is not connected. Cannot write to characteristic.")
-            window.alert("Bluetooth is not connected. Cannot write to characteristic. \n Connect to BLE first!")
+            console.error("Bluetooth is not connected. Cannot save configuration.");
+            window.alert("Bluetooth is not connected. Cannot save configuration. \n Connect to BLE first!");
         }
     }
 
     function disconnectDevice() {
         console.log("Disconnect Device.");
         if (bleServer && bleServer.connected) {
-            if (sensorCharacteristicFound) {
-                sensorCharacteristicFound.stopNotifications()
-                    .then(() => {
-                        console.log("Notifications Stopped");
-                        return bleServer.disconnect();
-                    })
-                    .then(() => {
-                        console.log("Device Disconnected");
-                        bleStateContainer.innerHTML = "Device Disconnected";
-                        bleStateContainer.style.color = "#d13a30";
-
-                    })
-                    .catch(error => {
-                        console.log("An error occurred:", error);
-                    });
-            } else {
-                console.log("No characteristic found to disconnect.");
-            }
+            bleServer.disconnect();
+            console.log("Device Disconnected");
+            bleStateContainer.innerHTML = "Device Disconnected";
+            bleStateContainer.style.color = "#d13a30";
         } else {
-            // Throw an error if Bluetooth is not connected
             console.error("Bluetooth is not connected.");
-            window.alert("Bluetooth is not connected.")
+            window.alert("Bluetooth is not connected.");
         }
     }
 
-    function getDateTime() {
-        var currentdate = new Date();
-        var day = ("00" + currentdate.getDate()).slice(-2); // Convert day to string and slice
-        var month = ("00" + (currentdate.getMonth() + 1)).slice(-2);
-        var year = currentdate.getFullYear();
-        var hours = ("00" + currentdate.getHours()).slice(-2);
-        var minutes = ("00" + currentdate.getMinutes()).slice(-2);
-        var seconds = ("00" + currentdate.getSeconds()).slice(-2);
+    function handleCharacteristicChange(event){
+        const value = new TextDecoder().decode(event.target.value);
+        console.log("Characteristic value changed: ", value);
 
-        var datetime = day + "/" + month + "/" + year + " at " + hours + ":" + minutes + ":" + seconds;
-        return datetime;
+        const configData = JSON.parse(value);
+
+        enpC.value = configData.enpC;
+        enpB.value = configData.enpB;
+        enpA.value = configData.enpA;
+        absEnp.value = configData.absEnp;
+        absEnq.value = configData.absEnq;
+        cf2Varh.value = configData.cf2Varh;
+        phase.value = configData.phase;
+        didtEn.value = configData.didtEn;
+        hpfOff.value = configData.hpfOff;
+        freq60hz.value = configData.freq60hz;
+        pgaGain.value = configData.pgaGain;
+        voltGain.value = configData.voltGain;
+        curGainCt1.value = configData.curGainCt1;
+        curGainCt2.value = configData.curGainCt2;
+        curGainCt3.value = configData.curGainCt3;
+        freqHiThresh.value = configData.freqHiThresh;
+        freqLoThresh.value = configData.freqLoThresh;
+        voltLoThresh.value = configData.voltLoThresh;
     }
-
-
 </script>
-
 </html>
