@@ -17,6 +17,7 @@
                 <p>
                     <button id="connectBleButton" class="connectButton"> Connect to BLE Device</button>
                     <button id="disconnectBleButton" class="disconnectButton"> Disconnect BLE Device</button>
+                    <button id="loadConfigButton" class="loadConfigButton"> Carregar Configurações Salvas</button>
                 </p>
                 <p class="gray-label">BLE state: <strong><span id="bleState" style="color:#d13a30;">Disconnected</span></strong></p>
             </div>
@@ -111,6 +112,7 @@
     // DOM Elements
     const connectButton = document.getElementById('connectBleButton');
     const disconnectButton = document.getElementById('disconnectBleButton');
+    const loadConfigButton = document.getElementById('loadConfigButton');
     const saveConfigButton = document.getElementById('saveConfigButton');
     const bleStateContainer = document.getElementById('bleState');
     const configStatusContainer = document.getElementById('configStatus');
@@ -158,6 +160,9 @@
     // Disconnect Button
     disconnectButton.addEventListener('click', disconnectDevice);
 
+    // Load Configuration Button
+    loadConfigButton.addEventListener('click', loadConfiguration);
+
     // Save Configuration Button
     saveConfigButton.addEventListener('click', saveConfiguration);
 
@@ -176,7 +181,6 @@
     function connectToDevice(){
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
-            
             optionalServices: [bleService]
         })
         .then(device => {
@@ -259,16 +263,44 @@
         }
     }
 
-    function disconnectDevice() {
-        console.log("Disconnect Device.");
-        if (bleServer && bleServer.connected) {
-            bleServer.disconnect();
-            console.log("Device Disconnected");
-            bleStateContainer.innerHTML = "Device Disconnected";
-            bleStateContainer.style.color = "#d13a30";
+    function loadConfiguration() {
+        if (sendConfigCharacteristicFound && bleServer && bleServer.connected) {
+            sendConfigCharacteristicFound.readValue()
+                .then(value => {
+                    const decoder = new TextDecoder();
+                    const jsonStr = decoder.decode(value);
+                    const configData = JSON.parse(jsonStr);
+
+                    enpC.value = configData.enpC;
+                    enpB.value = configData.enpB;
+                    enpA.value = configData.enpA;
+                    absEnp.value = configData.absEnp;
+                    absEnq.value = configData.absEnq;
+                    cf2Varh.value = configData.cf2Varh;
+                    phase.value = configData.phase;
+                    didtEn.value = configData.didtEn;
+                    hpfOff.value = configData.hpfOff;
+                    freq60hz.value = configData.freq60hz;
+                    pgaGain.value = configData.pgaGain;
+                    voltGain.value = configData.voltGain;
+                    curGainCt1.value = configData.curGainCt1;
+                    curGainCt2.value = configData.curGainCt2;
+                    curGainCt3.value = configData.curGainCt3;
+                    freqHiThresh.value = configData.freqHiThresh;
+                    freqLoThresh.value = configData.freqLoThresh;
+                    voltLoThresh.value = configData.voltLoThresh;
+
+                    configStatusContainer.innerHTML = "Configuration loaded successfully!";
+                    configStatusContainer.style.color = "#24af37";
+                })
+                .catch(error => {
+                    console.error("Error reading configuration: ", error);
+                    configStatusContainer.innerHTML = "Failed to load configuration.";
+                    configStatusContainer.style.color = "#d13a30";
+                });
         } else {
-            console.error("Bluetooth is not connected.");
-            window.alert("Bluetooth is not connected.");
+            console.error("Bluetooth is not connected. Cannot load configuration.");
+            window.alert("Bluetooth is not connected. Cannot load configuration. \n Connect to BLE first!");
         }
     }
 
