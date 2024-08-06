@@ -267,6 +267,19 @@
         window.alert("Bluetooth is not connected or configuration characteristic not found. \n Connect to BLE first!");
     }
 }
+
+    function disconnectDevice() {
+            console.log("Disconnect Device.");
+            if (bleServer && bleServer.connected) {
+                bleServer.disconnect();
+                console.log("Device Disconnected");
+                bleStateContainer.innerHTML = "Device Disconnected";
+                bleStateContainer.style.color = "#d13a30";
+            } else {
+                console.error("Bluetooth is not connected.");
+                window.alert("Bluetooth is not connected.");
+            }
+    }
     function loadConfiguration() {
         if (sendConfigCharacteristicFound && bleServer && bleServer.connected) {
             sendConfigCharacteristicFound.readValue()
