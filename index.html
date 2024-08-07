@@ -181,7 +181,7 @@
     function connectToDevice(){
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
-            filters: [{name: deviceName}],
+            filters: [{ namePrefix: 'ESP32_' }],
             optionalServices: [bleService]
         })
         .then(device => {
@@ -224,49 +224,49 @@
     }
 
     function saveConfiguration() {
-    const configData = {
-        enpC: enpC.value,
-        enpB: enpB.value,
-        enpA: enpA.value,
-        absEnp: absEnp.value,
-        absEnq: absEnq.value,
-        cf2Varh: cf2Varh.value,
-        phase: phase.value,
-        didtEn: didtEn.value,
-        hpfOff: hpfOff.value,
-        freq60hz: freq60hz.value,
-        pgaGain: pgaGain.value,
-        voltGain: voltGain.value,
-        curGainCt1: curGainCt1.value,
-        curGainCt2: curGainCt2.value,
-        curGainCt3: curGainCt3.value,
-        freqHiThresh: freqHiThresh.value,
-        freqLoThresh: freqLoThresh.value,
-        voltLoThresh: voltLoThresh.value
-    };
+        const configData = {
+            enpC: enpC.value,
+            enpB: enpB.value,
+            enpA: enpA.value,
+            absEnp: absEnp.value,
+            absEnq: absEnq.value,
+            cf2Varh: cf2Varh.value,
+            phase: phase.value,
+            didtEn: didtEn.value,
+            hpfOff: hpfOff.value,
+            freq60hz: freq60hz.value,
+            pgaGain: pgaGain.value,
+            voltGain: voltGain.value,
+            curGainCt1: curGainCt1.value,
+            curGainCt2: curGainCt2.value,
+            curGainCt3: curGainCt3.value,
+            freqHiThresh: freqHiThresh.value,
+            freqLoThresh: freqLoThresh.value,
+            voltLoThresh: voltLoThresh.value
+        };
 
-    console.log("Saving Configuration: ", configData);
+        console.log("Saving Configuration: ", configData);
 
-    if (bleServer && bleServer.connected && configCharacteristicFound) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(JSON.stringify(configData));
-        console.log("Encoded Data: ", data);
+        if (bleServer && bleServer.connected && configCharacteristicFound) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(JSON.stringify(configData));
+            console.log("Encoded Data: ", data);
 
-        configCharacteristicFound.writeValue(data)
-            .then(() => {
-                configStatusContainer.innerHTML = "Configuration saved successfully!";
-                configStatusContainer.style.color = "#24af37";
-            })
-            .catch(error => {
-                console.error("Error writing configuration: ", error);
-                configStatusContainer.innerHTML = "Failed to save configuration.";
-                configStatusContainer.style.color = "#d13a30";
-            });
-    } else {
-        console.error("Bluetooth is not connected or configCharacteristic not found.");
-        window.alert("Bluetooth is not connected or configuration characteristic not found. \n Connect to BLE first!");
+            configCharacteristicFound.writeValue(data)
+                .then(() => {
+                    configStatusContainer.innerHTML = "Configuration saved successfully!";
+                    configStatusContainer.style.color = "#24af37";
+                })
+                .catch(error => {
+                    console.error("Error writing configuration: ", error);
+                    configStatusContainer.innerHTML = "Failed to save configuration.";
+                    configStatusContainer.style.color = "#d13a30";
+                });
+        } else {
+            console.error("Bluetooth is not connected or configCharacteristic not found.");
+            window.alert("Bluetooth is not connected or configuration characteristic not found. \n Connect to BLE first!");
+        }
     }
-}
 
     function disconnectDevice() {
             console.log("Disconnect Device.");
