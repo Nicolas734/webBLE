@@ -181,7 +181,7 @@
     function connectToDevice(){
         console.log('Initializing Bluetooth...');
         navigator.bluetooth.requestDevice({
-            filters: [{ namePrefix: 'ESP32_' }],
+            filters: [{ namePrefix: 'TS_' }],
             optionalServices: [bleService]
         })
         .then(device => {
